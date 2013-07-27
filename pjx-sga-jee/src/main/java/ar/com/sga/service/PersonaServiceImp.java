@@ -1,44 +1,43 @@
 package ar.com.sga.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
 import ar.com.sga.domain.Persona;
+import ar.com.sga.eis.PersonaDao;
 
 @Stateless
-public class PersonaServiceImp implements PersonaServiceRemote, PersonaServiceLocal {
+public class PersonaServiceImp implements PersonaServiceRemote, PersonaService{
 
+	@EJB
+	private PersonaDao personaDao;
+	
 	public List<Persona> listarPersonas() {
-		List<Persona>personas=new ArrayList<Persona>();
-		personas.add(new Persona(1,"Ariel","Duarte","Kind","arielpy@gmail.com","2345678"));
-		personas.add(new Persona(2,"Reynaldo","Duarte","Kind","arielpy@gmail.com","2345678"));
-		return personas;
+		return personaDao.findAllPersonas();
 	}
 
 	public Persona encontrarPersonaById(Persona persona) {
-		// TODO Auto-generated method stub
-		return null;
+		return personaDao.findPersonaById(persona);
 	}
 
-	public Persona encontrarPersonaByEmail(Persona persona) {
-		// TODO Auto-generated method stub
-		return null;
+	public Persona encontrarPersonaByDni(Persona persona) {
+		return personaDao.findPersonaByDni(persona);
 	}
 
 	public void guardaPersona(Persona persona) {
-		// TODO Auto-generated method stub
+		personaDao.insertPersona(persona);
 
 	}
 
 	public void modificarPersona(Persona persona) {
-		// TODO Auto-generated method stub
+		personaDao.updatePersona(persona);
 
 	}
 
 	public void eliminarPersona(Persona persona) {
-		// TODO Auto-generated method stub
+		personaDao.deletePersona(persona);
 
 	}
 

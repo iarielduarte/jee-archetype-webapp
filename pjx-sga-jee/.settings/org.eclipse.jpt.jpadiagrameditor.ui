@@ -1,0 +1,9 @@
+#This file contains JPA Diagram Editor settings
+#Tue Jul 23 20:50:08 ART 2013
+defaultTableNamePrefix=T_
+directEditAffectsClass=true
+accessType=field
+diagramFolder=diagrams
+collectionType=collection
+oneToManyOldStyle=false
+defaultPackage=org.persistence

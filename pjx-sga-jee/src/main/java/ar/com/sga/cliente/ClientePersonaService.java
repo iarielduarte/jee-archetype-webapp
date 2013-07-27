@@ -9,6 +9,7 @@ import javax.naming.NamingException;
 import ar.com.sga.domain.Persona;
 import ar.com.sga.service.PersonaServiceRemote;
 
+
 public class ClientePersonaService {
 
 	public static void main(String[] args) {

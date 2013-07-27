@@ -1,0 +1,9 @@
+eclipse.preferences.version=1
+problem.NO_JPA_PROJECT=warning
+problem.PERSISTENCE_NO_PERSISTENCE_UNIT=ignore
+problem.PERSISTENCE_XML_INVALID_CONTENT=ignore
+problem.PERSISTENCE_XML_UNSUPPORTED_CONTENT=warning
+problem.PROJECT_INVALID_LIBRARY_PROVIDER=warning
+problem.PROJECT_MULTIPLE_PERSISTENCE_XML=warning
+problem.PROJECT_NO_PERSISTENCE_XML=warning
+workspace_preferences_overriden=true
