@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title>Welcome to JSF_PrimeFaces_Hibernate Project</title>
+	<link href="resources/css/principal.css" rel="stylesheet" type="text/css" />
+</h:head>
+<body>
+	<h:form>
+		<h:outputText value="Saved Record is #{userMBean.message}"></h:outputText>
+		<p:dataTable id="users" value="#{userMBean.getUsers()}" var="user"
+			emptyMessage="No hay informacion disponibles." paginator="true"
+			rows="10" paginatorPosition="bottom"
+			paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			rowsPerPageTemplate="5,10">
+			<f:facet name="header">
+				<h:form style="margin-bottom: 8px">
+					<p:commandButton
+						action="#{userMBean.processPage2}"
+						value="Nuevo Usuario" icon="icon-add">
+					</p:commandButton>
+					<p:commandButton
+						action="#{userMBean.goHome}"
+						value="Home" icon="ui-icon-extlink">
+					</p:commandButton>
+				</h:form>
+			</f:facet>
+
+			<p:column>
+				<f:facet name="header">
+					<h:outputText value="ID" />
+				</f:facet>
+				<h:outputText value="#{user.id}" />
+			</p:column>
+			<p:column>
+				<f:facet name="header">
+					<h:outputText value="Usuario" />
+				</f:facet>
+				<h:outputText value="#{user.name}" />
+			</p:column>
+			<p:column>
+				<f:facet name="header">
+					<h:outputText value="Contraseña" />
+				</f:facet>
+				<h:outputText value="#{user.password}" />
+			</p:column>
+
+			<p:column style="width:10px" headerText="Actualizar">
+				<div align="center">
+					<p:commandButton title="Editar"
+						icon="ui-icon-pencil" />
+				</div>
+			</p:column>
+			<p:column style="width:10px" headerText="Eliminar">
+				<p:commandButton
+					title="Eliminar"
+					icon="ui-icon-trash" />
+			</p:column>
+		</p:dataTable>
+		
+		
+	</h:form>
+</body>
+</html>

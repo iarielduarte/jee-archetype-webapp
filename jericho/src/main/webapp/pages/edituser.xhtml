@@ -1,0 +1,131 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title>Welcome to JSF_PrimeFaces_Hibernate Project</title>
+	<link href="../resources/css/principal.css" rel="stylesheet" type="text/css" />
+</h:head>
+<body>
+
+<h:form id="formAdd">
+		<p:panel id="panel" header="Nuevo Usuario" style="margin-bottom:10px;">
+		
+			 <p:growl id="messages" showDetail="true" autoUpdate="true" closable="true" />
+			<table>
+				<tr>
+					<td><h:outputLabel for="name" value="Nombre: *" /></td>
+					<td><p:inputText id="name" value="#{userMBean.name}"
+							required="true" label="Falta nombre de usuario" /></td>
+				</tr>
+				<tr>
+					<td><h:outputLabel for="pass1" value="Contraseña: *" /></td>
+					<td><p:password id="pass1" value="#{userMBean.password}"
+							match="pass2" label="Falta contraseña" required="true"
+							feedback="true" promptLabel="Ingrese una contraseña"
+							weakLabel="Mala" goodLabel="Buena" strongLabel="Excelente" /></td>
+				</tr>
+				<tr>
+					<td><h:outputLabel for="pass2" value="Confirmar: *" /></td>
+					<td><p:password id="pass2" value="#{userMBean.password}"
+							label="Faltan o no coiciden las contraseñas" required="true"
+							feedback="true" promptLabel="Confirmar contraseña"
+							weakLabel="Mala" goodLabel="Buena" strongLabel="Excelente" /></td>
+				</tr>
+			</table>
+			
+		</p:panel>
+		
+		 <p:commandButton  style="margin-left: 10px;" value="Nuevo" update=":formAdd" actionListener="#{userMBean.reset}" />
+		 <p:commandButton  style="margin-left: 10px;" value="Guardar" update=":form" actionListener="#{userMBean.addUser}"/>
+<!-- 		<p:commandButton  style="margin-left: 10px;" value="Modificar" update=":formdata" actionListener="#{alumnoBean.actualizar}"/> -->
+		
+		 <p:separator />
+		<p:spacer height="20" />
+	</h:form>
+	
+	
+	<p:ajaxStatus style="width:16px;height:16px;" id="ajaxStatusPanel">
+		<f:facet name="start">
+			<h:graphicImage library="images" name="ajaxloading.gif" />
+		</f:facet>
+		<f:facet name="complete">
+			<h:outputText value=":form:messages" />
+		</f:facet>
+	</p:ajaxStatus>
+	<h:form id="form">
+    	 <p:growl id="messages" showDetail="true" autoUpdate="true" closable="true" />
+		<p:dataTable id="userList" value="#{userMBean.users}" var="item" editable="true"
+		>
+
+			<f:facet name="header">
+				Lista de Usuarios
+			</f:facet>
+			
+			
+        	
+			<p:column>
+				<f:facet name="header">
+					<h:outputText value="ID" />
+				</f:facet>
+				<h:outputText value="#{item.id}" />
+			</p:column>
+			
+			<p:column headerText="Nombre" >
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{item.name}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:inputText value="#{item.name}"/>
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+			
+			<p:column headerText="Password" >
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{item.password}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:inputText value="#{item.password}"  />
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+			
+			<f:facet name="footer">
+				<h:commandButton value="Home" action="#{userMBean.goHome}" icon="ui-icon-extlink"/>
+			</f:facet>
+			
+			<p:column headerText="Actualizar" style="width:6%">
+				<p:rowEditor />
+			</p:column>
+			<p:ajax event="rowEdit" listener="#{userMBean.onEdit}" update=":form:messages" />  
+        	<p:ajax event="rowEditCancel" listener="#{userMBean.onCancel}" update=":form:messages" />	
+			
+<!-- 			<p:column style="width:10px" headerText="Eliminar"> -->
+<!-- 				<p:commandButton title="Eliminar" icon="ui-icon-trash" actionListener="#{userMBean.onDelete(item)}"  > -->
+<!-- 				 <f:ajax  render="userList" ></f:ajax>   -->
+<!-- 				</p:commandButton> -->
+<!-- 			</p:column> -->
+			
+			<p:column style="width:10px" headerText="Eliminar">
+				<p:commandButton title="Eliminar" icon="ui-icon-trash" actionListener="#{userMBean.onDelete(item)}" update=":form:userList" />
+			</p:column>
+			
+<!-- 			<p:column style="width:10px" headerText="Eliminar"> -->
+<!-- 			<p:commandButton action="#{userMBean.onDelete}" icon="ui-icon-close" title="remove from cart" update=":form:userList" process="@this" ajax="true" > -->
+<!--       			<f:setPropertyActionListener target="#{userMBean.selectedUser}"  value="#{item}" /> -->
+<!--       		</p:commandButton> -->
+<!--              </p:column> -->
+		</p:dataTable>
+		
+		
+	</h:form>
+</body>
+</html>

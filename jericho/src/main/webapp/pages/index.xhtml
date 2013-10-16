@@ -1,0 +1,37 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title>Jericho Plataform Web</title>
+	<link href="../resources/css/principal.css" rel="stylesheet" type="text/css" />
+</h:head>
+
+<body>
+	<h:form>
+		<p:commandButton action="#{userMBean.processPage1}"
+			value="Lista de Usuario" />
+		<p:commandButton action="#{userMBean.processPage2}"
+			value="Nuevo Usuario" />
+
+
+		<p:dock>
+			<p:menuitem value="Home" icon="../resources/images/home.png" url="http://www.google.com.ar" />
+			<p:menuitem value="Login" icon="../resources/images/key.png" url="#" />
+			<p:menuitem value="System" icon="../resources/images/system.png" url="#" />
+			<p:menuitem value="Calculator" icon="../resources/images/cal.png" url="#" />
+			<p:menuitem value="Gmail" icon="../resources/images/float.png" url="#" />
+			<p:menuitem value="facebook" icon="../resources/images/Facebook.png" url="https://www.facebook.com/iarield" />
+			<p:menuitem value="About" icon="../resources/images/info.png" url="#" />
+		</p:dock>
+	</h:form>
+
+
+
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title>Primefaces Web App</title>
+	<link href="../resources/css/principal.css" rel="stylesheet" type="text/css" />
+</h:head>
+
+
+
+
+<body>
+	<h:form>
+		<p:panel id="panel" header="Nuevo Usuario" style="margin-bottom:10px;">
+		
+			<p:messages id="messages" showDetail="true" autoUpdate="true" />
+			<table>
+				<tr>
+					<td><h:outputLabel for="name" value="Nombre: *" /></td>
+					<td><p:inputText id="name" value="#{userMBean.name}"
+							required="true" label="Falta nombre de usuario" /></td>
+				</tr>
+				<tr>
+					<td><h:outputLabel for="pass1" value="Contraseña: *" /></td>
+					<td><p:password id="pass1" value="#{userMBean.password}"
+							match="pass2" label="Falta contraseña" required="true"
+							feedback="true" promptLabel="Ingrese una contraseña"
+							weakLabel="Mala" goodLabel="Buena" strongLabel="Excelente" /></td>
+				</tr>
+				<tr>
+					<td><h:outputLabel for="pass2" value="Confirmar: *" /></td>
+					<td><p:password id="pass2" value="#{userMBean.password}"
+							label="Faltan o no coiciden las contraseñas" required="true"
+							feedback="true" promptLabel="Confirmar contraseña"
+							weakLabel="Mala" goodLabel="Buena" strongLabel="Excelente" /></td>
+				</tr>
+				<tr>
+					<td><p:commandButton id="submit" value="Save" action="#{userMBean.addUser}" ajax="false" /></td>
+					<td><p:commandButton id="reset" value="Reset" action="#{userMBean.reset}" ajax="false" /></td>
+					
+				</tr>
+			</table>
+			
+			
+		</p:panel>
+	</h:form>
+
+</body>
+</html>
