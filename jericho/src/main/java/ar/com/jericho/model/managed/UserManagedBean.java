@@ -36,6 +36,9 @@ public class UserManagedBean implements Serializable {
 	private static final String SUCCESS = "success";
 	private static final String ERROR = "error";
 	List<User> users;
+	List<User> userList;
+	List<User> filteredUsers;
+	
 	// Spring User Service is injected...
 	@ManagedProperty(value = "#{UserService}")
 	IUserService userService;
@@ -50,7 +53,7 @@ public class UserManagedBean implements Serializable {
 		
 	}
 	
-	List<User> userList;
+	
 
 	private String name;
 	private String password;
@@ -89,6 +92,7 @@ public class UserManagedBean implements Serializable {
 		        FacesContext.getCurrentInstance().addMessage(null, message);
 		        users = new ArrayList<User>();
 			    users.addAll(getUserService().getUsers());
+			    reset();
 		    }else{
 		    	FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error : ",  "The row with the id "+user.getId()+" has not been added successfully.");
 		        FacesContext.getCurrentInstance().addMessage(null, message);
@@ -204,5 +208,14 @@ public class UserManagedBean implements Serializable {
 	public String goHome() {
 		return "home";
 	}
-
+	
+	public List<User> getFilteredUsers() {  
+        return filteredUsers;  
+    }  
+  
+    public void setFilteredUsers(List<User> filteredUsers) {  
+        this.filteredUsers = filteredUsers;  
+    }  
+  
+    
 }
