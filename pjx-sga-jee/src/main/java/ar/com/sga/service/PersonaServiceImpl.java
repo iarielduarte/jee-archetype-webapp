@@ -4,16 +4,19 @@ import java.util.List;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.jws.WebService;
 
 import ar.com.sga.domain.Persona;
 import ar.com.sga.eis.PersonaDao;
 
 @Stateless
-public class PersonaServiceImp implements PersonaServiceRemote, PersonaService{
+@WebService(endpointInterface="ar.com.sga.service.PersonaServiceWS")
+public class PersonaServiceImpl implements PersonaServiceRemote, PersonaService, PersonaServiceWS{
 
 	@EJB
 	private PersonaDao personaDao;
 	
+	@Override
 	public List<Persona> listarPersonas() {
 		return personaDao.findAllPersonas();
 	}

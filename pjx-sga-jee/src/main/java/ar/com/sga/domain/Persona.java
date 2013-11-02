@@ -10,9 +10,12 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 
 @Entity
 @NamedQueries({@NamedQuery(name="Persona.findAll",query="SELECT p FROM Persona p ORDER BY p.personaId")})
+@XmlAccessorType(XmlAccessType.FIELD)
 @Table(name = "persona")
 public class Persona implements Serializable{
 	
