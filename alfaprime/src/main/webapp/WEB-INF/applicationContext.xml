@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:lang="http://www.springframework.org/schema/lang"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	    http://www.springframework.org/schema/beans/spring-beans.xsd
+	    http://www.springframework.org/schema/aop 
+ 		http://www.springframework.org/schema/aop/spring-aop.xsd
+ 		http://www.springframework.org/schema/context 
+ 	    http://www.springframework.org/schema/context/spring-context.xsd
+ 	    http://www.springframework.org/schema/jee 
+ 	    http://www.springframework.org/schema/jee/spring-jee.xsd
+ 	    http://www.springframework.org/schema/lang 
+ 		http://www.springframework.org/schema/lang/spring-lang.xsd
+		http://www.springframework.org/schema/tx 
+		http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/util 
+ 		http://www.springframework.org/schema/util/spring-util.xsd"
+		>
+
+<!--     <context:annotation-config /> -->
+<!-- 	<context:component-scan base-package="ar.com" /> -->
+	
+<!-- 	<bean id="messageSource" -->
+<!-- 		class="org.springframework.context.support.ReloadableResourceBundleMessageSource"> -->
+<!-- 		<property name="basename" value="classpath:messages" /> -->
+<!-- 		<property name="defaultEncoding" value="UTF-8" /> -->
+<!-- 	</bean> -->
+	
+	<!-- Beans Declaration -->
+	<bean id="Rol" class="ar.com.model.bean.Rol" />
+	<bean id="Usuario" class="ar.com.model.bean.Usuario" />
+
+	<!-- User Service Declaration -->
+	<bean id="RolService" class="ar.com.service.RolService">
+		<property name="rolDao" ref="RolDao" />
+	</bean>
+	<bean id="UsuarioService" class="ar.com.service.UsuarioService">
+		<property name="usuarioDao" ref="UsuarioDao" />
+	</bean>
+
+	<!-- User DAO Declaration -->
+	<bean id="RolDao" class="ar.com.model.dao.RolDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="UsuarioDao" class="ar.com.model.dao.UsuarioDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<!-- Data Source Declaration -->
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
+		p:location="/WEB-INF/jdbc.properties" />
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"	
+	    destroy-method="close" 
+		p:driverClass="${jdbc.driverClassName}"
+		p:jdbcUrl="${jdbc.databaseurl}" 
+		p:user="${jdbc.username}" 
+		p:password="${jdbc.password}" 
+		p:maxPoolSize="${jdbc.maxPoolSize}"
+        p:maxStatements="${jdbc.maxStatements}"
+        p:minPoolSize="${jdbc.minPoolSize}"	/>
+
+	<!-- Session Factory Declaration -->
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		
+<!-- 		<property name="configLocation"> -->
+<!-- 			<value>classpath:hibernate.cfg.xml</value> -->
+<!-- 		</property> -->
+		<property name="annotatedClasses">
+			<list>
+				<value>ar.com.model.bean.Rol</value>
+				<value>ar.com.model.bean.Usuario</value>
+			</list>
+		</property>
+		
+<!-- 		<property name="configurationClass"> -->
+<!-- 			<value>org.hibernate.cfg.AnnotationConfiguration</value> -->
+<!-- 		</property> -->
+		
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">${jdbc.dialect}</prop>
+				<prop key="hibernate.show_sql">true</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!-- Enable the configuration of transactional behavior based on annotations -->
+	<tx:annotation-driven transaction-manager="txManager" />
+
+	<!-- Transaction Manager is defined -->
+	<bean id="txManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+</beans>
