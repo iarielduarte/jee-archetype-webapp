@@ -3,6 +3,8 @@ package com.sprhib.model;
 /**
  * @author Ariel Duarte
  */
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,6 +13,8 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="teams")
+@ManagedBean
+@RequestScoped
 public class Team {
 	
 	@Id

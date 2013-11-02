@@ -1,5 +1,7 @@
 package com.sprhib.dao;
-
+/**
+ * @author Ariel Duarte
+ */
 import java.util.List;
 
 import org.hibernate.Session;
