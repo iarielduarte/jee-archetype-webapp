@@ -7,31 +7,83 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
 
+<ui:define name="head">
+		<script type="text/javascript">
+			function handleLoginRequest(xhr, status, args) {
+				if(args.validationFailed || !args.loggedIn) {
+					PF('dlg').jq.effect("shake", { times:5 }, 100);
+				} 
+                else {
+					PF('dlg').hide();
+					$('#loginLink').fadeOut();
+				}
+			}
+		</script>
+	</ui:define>
+	
 <h:head>
 	<title>Jericho Plataform Web</title>
 	<link href="../resources/css/principal.css" rel="stylesheet" type="text/css" />
+	
 </h:head>
 
 <body>
-	<h:form>
-		<p:commandButton action="#{userMBean.processPage1}"
-			value="Lista de Usuario" />
-		<p:commandButton action="#{userMBean.processPage2}"
-			value="Nuevo Usuario" />
+	<h:form id="form">
+
+
+		<h:outputLink id="loginLink" value="javascript:void(0)"	onclick="dlg.show()" title="login">
+			<h:graphicImage library="images" name="user.png" />
+		</h:outputLink>
+		
+		  <p:commandButton action="#{userMBean.processPage1}"  value="Lista de Usuario" />
+          <p:commandButton action="#{userMBean.processPage2}"  value="Nuevo Usuario" />
+
+		<p:growl id="growl" showDetail="true" life="3000" />
+
+		<p:dialog id="dialog" header="Login" widgetVar="dlg" resizable="false">
+
+			<h:panelGrid columns="2" cellpadding="5">
+				<h:outputLabel for="username" value="Username:" />
+				<p:inputText value="#{loginBean.username}" id="username"
+					required="true" label="username" />
+
+				<h:outputLabel for="password" value="Password:" />
+				<h:inputSecret value="#{loginBean.password}" id="password"
+					required="true" label="password" />
+
+				<f:facet name="footer">
+					<p:commandButton id="loginButton" value="Login" update="growl"
+						actionListener="#{loginBean.login(event)}"
+						oncomplete="handleLoginRequest(xhr, status, args)" />
+				</f:facet>
+			</h:panelGrid>
+
+		</p:dialog>
 
 
 		<p:dock>
 			<p:menuitem value="Home" icon="../resources/images/home.png" url="http://www.google.com.ar" />
 			<p:menuitem value="Login" icon="../resources/images/key.png" url="#" />
-			<p:menuitem value="System" icon="../resources/images/system.png" url="#" />
-			<p:menuitem value="Calculator" icon="../resources/images/cal.png" url="#" />
-			<p:menuitem value="Gmail" icon="../resources/images/float.png" url="#" />
-			<p:menuitem value="facebook" icon="../resources/images/Facebook.png" url="https://www.facebook.com/iarield" />
+			<p:menuitem value="System" icon="../resources/images/system.png"
+				url="#" />
+			<p:menuitem value="Calculator" icon="../resources/images/cal.png"
+				url="#" />
+			<p:menuitem value="Gmail" icon="../resources/images/float.png"
+				url="#" />
+			<p:menuitem value="facebook" icon="../resources/images/Facebook.png"
+				url="https://www.facebook.com/iarield" />
 			<p:menuitem value="About" icon="../resources/images/info.png" url="#" />
 		</p:dock>
 	</h:form>
-
-
-
+	<script type="text/javascript">
+		function handleLoginRequest(xhr, status, args) {
+			if (args.validationFailed || !args.loggedIn) {
+				PF('dlg').jq.effect("shake", {	times : 5	}, 100);
+			} else {
+				PF('dlg').hide();
+				$('#loginLink').fadeOut();
+			}
+		}
+	</script>
 </body>
 </html>

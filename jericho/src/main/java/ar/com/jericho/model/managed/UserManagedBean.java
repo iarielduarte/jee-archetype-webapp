@@ -5,8 +5,13 @@ package ar.com.jericho.model.managed;
  * @since 10 Oct 2013
  * @version 1.0.0
  */
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -15,8 +20,11 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 import org.primefaces.event.RowEditEvent;
@@ -27,17 +35,29 @@ import org.springframework.stereotype.Controller;
 import ar.com.jericho.model.bean.User;
 import ar.com.jericho.service.IUserService;
 
-@ManagedBean(name = "userMBean")
-@RequestScoped
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+
+import com.itextpdf.text.FontFactory;
+
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.Paragraph;
+import org.primefaces.context.RequestContext;  
+
+@ManagedBean(name = "loginBean")
+@ViewScoped
+@SessionScoped
 public class UserManagedBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private static Logger log = Logger.getLogger(UserManagedBean.class);
 	private static final String SUCCESS = "success";
 	private static final String ERROR = "error";
-	List<User> users;
-	List<User> userList;
-	List<User> filteredUsers;
 	
 	// Spring User Service is injected...
 	@ManagedProperty(value = "#{UserService}")
@@ -58,6 +78,19 @@ public class UserManagedBean implements Serializable {
 	private String name;
 	private String password;
 	private String message;
+	
+	List<User> users;
+	List<User> userList;
+	List<User> filteredUsers;
+	private User selectedUser;
+	
+	public User getSelectedUser() {
+		return selectedUser;
+	}
+
+	public void setSelectedUser(User selectedUser) {
+		this.selectedUser = selectedUser;
+	}
 	
 	public String getName() {
 		return name;
@@ -216,6 +249,87 @@ public class UserManagedBean implements Serializable {
     public void setFilteredUsers(List<User> filteredUsers) {  
         this.filteredUsers = filteredUsers;  
     }  
+    
+    public void imprimir() {
+        
+        Document document = new Document(PageSize.LETTER);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        try {
+              PdfWriter.getInstance(document, baos);
+             //METADATA
+              List<User> usersList = new ArrayList<User>();
+              usersList.addAll(getUserService().getUsers());
+      	    
+      	    
+//              AlumnoDao alumnodaos = new AlumnoDao();
+//              List<Alumno> alList = alumnodaos.buscarTodos();
+             document.open();
+            
+             document.add(new Paragraph(" USUARIOS REGISTRADOS \n"));
+            
+             DateFormat formatter= new SimpleDateFormat("dd/MM/yy '-' hh:mm:ss:");
+              Date currentDate = new Date();
+              String date = formatter.format(currentDate);
+             document.add(new Paragraph("Fecha Generado: "+date)); 
+             document.add(new Paragraph("\n"));
+            
+             PdfPTable table = new PdfPTable(3);
+            
+             table.setTotalWidth(new float[]{ 50, 110, 170 });
+         table.setLockedWidth(true);
+            
+        
+          PdfPCell cell = new PdfPCell(new Paragraph("Listado de Usuarios" ,
+                  FontFactory.getFont("arial",   // fuente
+                    8,                            // tamaño
+                Font.BOLD,                   // estilo
+                          BaseColor.MAGENTA)));
+             cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+             cell.setBackgroundColor(BaseColor.GRAY);
+             cell.setColspan(3);
+             table.addCell(cell);
+
+             cell = new PdfPCell(new Paragraph ("ID", FontFactory.getFont("arial",8,Font.BOLD,BaseColor.GRAY )));
+              
+           
+             table.addCell("Id");
+             table.addCell("Nombre");
+             table.addCell("Password");
+            
+            
+             for (int i = 0; i < usersList.size(); i++) {
+                   User id = usersList.get(i);
+                   table.addCell(id.getId().toString());
+                   cell.setBackgroundColor(BaseColor.LIGHT_GRAY);
+                   table.addCell(id.getName());
+                   table.addCell(id.getPassword());
+                   
+             }
+             document.add(table);
+       } catch (Exception ex) {
+             System.out.println("Error " + ex.getMessage());
+       }
+       document.close();
+       FacesContext context = FacesContext.getCurrentInstance();
+       Object response = context.getExternalContext().getResponse();
+       if (response instanceof HttpServletResponse) {
+             HttpServletResponse hsr = (HttpServletResponse) response;
+             hsr.setContentType("application/pdf");
+             hsr.setHeader("Content-disposition", "attachment");
+             hsr.setContentLength(baos.size());
+             try {
+                   ServletOutputStream out = hsr.getOutputStream();
+                   baos.writeTo(out);
+                   out.flush();
+             } catch (IOException ex) {
+                   System.out.println("Error:  " + ex.getMessage());
+             }
+             context.responseComplete();
+       }
+  }
+  public void reset2() { 
+         RequestContext.getCurrentInstance().reset("formEditar:panel"); 
+     } 
   
     
 }

@@ -10,10 +10,24 @@
 <h:head>
 	<title>PrimeFaces_Hibernate Project</title>
 	<link href="../resources/css/principal.css" rel="stylesheet" type="text/css" />
+
+	
+
 </h:head>
 <body>
 
 <h:form id="formAdd">
+
+<p:menubar id="menuBarApp" styleClass="divBottom" autoDisplay="false">
+		<f:facet name="options">
+			<p:inputText style="margin-right:10px" />
+			<p:commandButton type="button" value="Home" icon="ui-icon-extlink" actionListener="#{userMBean.goHome}" ajax="false"/>
+			<p:commandButton type="button" value="Logout" icon="ui-icon-extlink"  />
+		</f:facet>
+	</p:menubar>
+	
+	
+
 		<p:panel id="panel" header="Nuevo Usuario" style="margin-bottom:10px;">
 		
 			 <p:growl id="messages" showDetail="true" autoUpdate="true" closable="true" />
@@ -55,18 +69,23 @@
 			<h:graphicImage library="images" name="ajaxloading.gif" />
 		</f:facet>
 		<f:facet name="complete">
-			<h:outputText value=":form:messages" />
+			<h:outputText value="" />
 		</f:facet>
 	</p:ajaxStatus>
 	<h:form id="form">
+		<p:commandButton value="Home" action="#{userMBean.goHome}" icon="ui-icon-extlink"/>
     	 <p:growl id="messages" showDetail="true" autoUpdate="true" closable="true" />
+    	 
 		<p:dataTable id="userList" value="#{userMBean.users}" var="item" editable="true"
 		widgetVar="usersTable" emptyMessage="No hay usuarios con este criterio"
 		filteredValue="#{userMBean.filteredUsers}"
 		sortMode="multiple"
 		paginator="true" rows="10"  
 		paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
-        rowsPerPageTemplate="5,10,15">
+        rowsPerPageTemplate="5,10,15"
+        selection="#{userMBean.selectedUser}"
+        selectionMode="single"
+        rowKey="#{item.id}">
 
 		<f:facet name="header">  
             <p:outputPanel>  
@@ -105,7 +124,7 @@
 			</p:column>
 			
 			<f:facet name="footer">
-				<h:commandButton value="Home" action="#{userMBean.goHome}" icon="ui-icon-extlink"/>
+				<p:commandButton action="#{userMBean.imprimir()}" value="Report" icon="icon-report" ajax="false" />
 			</f:facet>
 			
 			<p:column headerText="Actualizar" style="width:6%">
@@ -114,23 +133,48 @@
 			<p:ajax event="rowEdit" listener="#{userMBean.onEdit}" update=":form:messages" />  
         	<p:ajax event="rowEditCancel" listener="#{userMBean.onCancel}" update=":form:messages" />	
 			
-<!-- 			<p:column style="width:10px" headerText="Eliminar"> -->
-<!-- 				<p:commandButton title="Eliminar" icon="ui-icon-trash" actionListener="#{userMBean.onDelete(item)}"  > -->
-<!-- 				 <f:ajax  render="userList" ></f:ajax>   -->
-<!-- 				</p:commandButton> -->
-<!-- 			</p:column> -->
 			
 			<p:column style="width:10px" headerText="Eliminar">
 				<p:commandButton title="Eliminar" icon="ui-icon-trash" actionListener="#{userMBean.onDelete(item)}" update=":form:userList" />
 			</p:column>
 			
-<!-- 			<p:column style="width:10px" headerText="Eliminar"> -->
-<!-- 			<p:commandButton action="#{userMBean.onDelete}" icon="ui-icon-close" title="remove from cart" update=":form:userList" process="@this" ajax="true" > -->
-<!--       			<f:setPropertyActionListener target="#{userMBean.selectedUser}"  value="#{item}" /> -->
-<!--       		</p:commandButton> -->
-<!--              </p:column> -->
+			 <p:column style="width:32px">  
+                    <p:commandButton update=":form:display"  
+                        onclick="carDialog.show()"  
+                        icon="ui-icon-search">  
+                        <f:setPropertyActionListener value="#{item}"  target="#{userMBean.selectedUser}" />  
+                    </p:commandButton>  
+                </p:column>
+
+			<f:facet name="footer">
+				<p:commandButton id="viewButton" value="View" icon="ui-icon-search"
+					update=":form:display" onclick="carDialog.show()" />
+			</f:facet>
 		</p:dataTable>
 		
+		<p:dialog header="Car Detail" widgetVar="carDialog" resizable="false" draggable="false"  
+              width="600" showEffect="fade" hideEffect="explode" modal="true">  
+  
+        <h:panelGrid id="display" columns="2" cellpadding="4">  
+  
+            <f:facet name="header">  
+<!--                 <p:graphicImage value="/images/cars/#{tableBean.selectedCar.manufacturer}.jpg"/>  -->
+                <h:graphicImage library="images" name="Billing.png" /> 
+            </f:facet>  
+  
+            <h:outputText value="ID:" />  
+            <h:outputText value="#{userMBean.selectedUser.id}"/>  
+  
+            <h:outputText value="Usuario:" />  
+            <h:outputText value="#{userMBean.selectedUser.name}"/>  
+  
+            <h:outputText value="Password:" />  
+            <h:outputText value="#{userMBean.selectedUser.password}"/>  
+  
+            <h:outputText value="Descripción:" />  
+            <h:outputText value="Aqui agregamos descripciones que no se muestran en la grilla."/>  
+        </h:panelGrid>  
+    </p:dialog>  
 		
 	</h:form>
 </body>
