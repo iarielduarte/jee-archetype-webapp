@@ -19,17 +19,22 @@
 	<p:growl id="growl" showDetail="true" life="3000" />
 		<h:form id="formLogin">
 			
-			<p:panel header="Acceso al Sistema" >
+					
 				
-					<h:panelGrid columns="2" cellpadding="5">
-						<h:outputLabel for="nombre" value="Usuario:" />
-						<p:inputText value="#{loginBean.nombre}" id="nombre" required="true" label="nombre" />
+			<p:panel header="Acceso al Sistema" >
 
-						<h:outputLabel for="clave" value="Clave:" />
-						<p:password value="#{loginBean.clave}" id="clave" required="true" label="clave"></p:password>
+
+				<h:panelGrid columns="2" cellpadding="5">
+						<h:outputLabel for="nombre" value="Nombre de usuario*" />
+						<br/>
+						<p:inputText value="#{loginBean.nombre}" id="nombre" required="true" label="nombre" style="width: 300px;  height: 30px;" placeholder="Ingrese su usuario..."/>
+						<br/>
+						<h:outputLabel for="clave" value="Clave de acceso*" />
+						<br/>
+						<p:password value="#{loginBean.clave}" id="clave" required="true" label="clave" style="width: 300px;  height: 30px;" placeholder="Ingrese su clave..."></p:password>
 						<f:facet name="footer">
-							<p:commandButton id="loginButton" value="Login" update=":growl"
-								actionListener="#{loginBean.login(actionEvent)}" icon="icon-login"
+							<p:commandButton id="loginButton" value="Ingresar" update=":growl"
+								actionListener="#{loginBean.login(actionEvent)}" icon="icon-login" style="width: 100px;  height: 30px;"
 								oncomplete="handleLoginRequest(xhr, status, args)" />
 						</f:facet>
 					</h:panelGrid>

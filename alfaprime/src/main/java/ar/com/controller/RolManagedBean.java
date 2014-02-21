@@ -1,20 +1,27 @@
 package ar.com.controller;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
+import javax.faces.model.SelectItem;
 
 import ar.com.model.bean.Rol;
 import ar.com.model.bean.Usuario;
 import ar.com.service.IRolService;
 import ar.com.service.IUsuarioService;
+import ar.com.service.RolService;
 import ar.com.service.UsuarioService;
 
 @ManagedBean(name = "rolMBean")
-@RequestScoped
+@ViewScoped
+@SessionScoped
 public class RolManagedBean implements Serializable{
 
 	private static final long serialVersionUID = 1L;
@@ -22,10 +29,15 @@ public class RolManagedBean implements Serializable{
 	@ManagedProperty(value = "#{RolService}")
 	private IRolService rolService;
 	private String nombre;
-	private List<Rol> rols;
+	private List<Rol> roles;
 	
-	@ManagedProperty(value = "#{UsuarioService}")
-	IUsuarioService usuService;
+	
+	
+	@PostConstruct
+	public void inicializar() {
+    	roles = getRolService().getRols();
+		
+	}
 	
 	/*TODO: View...Actions*/
 	public void add(){
@@ -33,16 +45,9 @@ public class RolManagedBean implements Serializable{
 		rol.setNombre(getNombre());
 		getRolService().addRol(rol);
 		
-		Usuario usu = new Usuario();
-		usu.setNombre("Ariel");
-		usu.setRol(getRolService().getRolById(1));
-		usu.setClave("123");
-		usu.setEmail("@");
-		getUsuService().addUsuario(usu);
-		
 	}
 	
-	
+	private List<SelectItem> selectOneItemRol;
 	
 	
 	/*TODO: Getters...and...Setters*/
@@ -63,29 +68,25 @@ public class RolManagedBean implements Serializable{
 		this.rolService = rolService;
 	}
 
-	public List<Rol> getRols() {
-		return rols;
+	public List<Rol> getRoles() {
+		return roles;
 	}
 
-	public void setRols(List<Rol> rols) {
-		this.rols = rols;
+	public void setRoles(List<Rol> rols) {
+		this.roles = rols;
 	}
 
-
-
-
-	public IUsuarioService getUsuService() {
-		return usuService;
+	public List<SelectItem> getSelectOneItemRol() {
+		selectOneItemRol = new ArrayList<SelectItem>();
+		List<Rol> roles = getRolService().getRols();
+		for (Rol rol : roles) {
+			SelectItem selectItem = new SelectItem(rol.getId(), rol.getNombre());
+			selectOneItemRol.add(selectItem);
+		}
+		return selectOneItemRol;
 	}
 
-
-
-
-	public void setUsuService(IUsuarioService usuService) {
-		this.usuService = usuService;
-	}
 	
-	
-	
+
 
 }

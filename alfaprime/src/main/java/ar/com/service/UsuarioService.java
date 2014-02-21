@@ -10,6 +10,7 @@ import ar.com.model.bean.Usuario;
 import ar.com.model.dao.UsuarioDao;
 
 @Service
+@Transactional(readOnly = true)
 public class UsuarioService implements IUsuarioService {
 
 	
@@ -24,24 +25,52 @@ public class UsuarioService implements IUsuarioService {
 	public void setUsuarioDao(UsuarioDao usuarioDao) {
 		this.usuarioDao = usuarioDao;
 	}
-
+	
 	@Transactional
-	public void addUsuario(Usuario usuario) {
-		getUsuarioDao().addUsuario(usuario);
-		
+	public boolean addUsuario(Usuario usuario) {
+		boolean success = false;
+		try {
+			getUsuarioDao().addUsuario(usuario);
+			success = true;
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			// log it and swallow exception
+			// calling code has to be sure to check on success flag;
+			// otherwise it has no idea something went terribly wrong
+		}
+		return success;
 	}
 
 	@Transactional
-	public void updateUsuario(Usuario usuario) {
-		getUsuarioDao().updateUsuario(usuario);
-		
+	public boolean updateUsuario(Usuario usuario) {
+		boolean success = false;
+		try {
+			getUsuarioDao().updateUsuario(usuario);
+			success = true;
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			// log it and swallow exception
+			// calling code has to be sure to check on success flag;
+			// otherwise it has no idea something went terribly wrong
+		}
+		return success;
 	}
 
 	@Transactional
-	public void deleteUsuario(Usuario usuario) {
-		getUsuarioDao().deleteUsuario(usuario);
-		
+	public boolean deleteUsuario(Usuario usuario) {
+		boolean success = false;
+		try {
+			getUsuarioDao().deleteUsuario(usuario);
+			success = true;
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			// log it and swallow exception
+			// calling code has to be sure to check on success flag;
+			// otherwise it has no idea something went terribly wrong
+		}
+		return success;
 	}
+
 
 	@Transactional
 	public Usuario getUsuarioById(int id) {
@@ -62,6 +91,7 @@ public class UsuarioService implements IUsuarioService {
 	public Usuario login(Usuario usuario) {
 		return getUsuarioDao().login(usuario);
 	}
+
 
 
 	

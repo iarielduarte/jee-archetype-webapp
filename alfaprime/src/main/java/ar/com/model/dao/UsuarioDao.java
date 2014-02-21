@@ -52,7 +52,8 @@ public class UsuarioDao implements IUsuarioDao {
 
 	@Override
 	public List<Usuario> getUsuarios() {
-		List list = getSessionFactory().getCurrentSession().createQuery("from Usuario").list();
+		String query="FROM Usuario u LEFT JOIN FETCH u.rol";
+		List list = getSessionFactory().getCurrentSession().createQuery(query).list();
 		return list;
 	}
 

@@ -23,4 +23,7 @@ public class AppManagedBean {
 	}
 	
 
+	public String getBasePath(){
+		return Util.basepath();
+	}
 }

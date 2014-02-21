@@ -7,9 +7,9 @@ import ar.com.model.bean.Usuario;
 
 public interface IUsuarioService {
 
-	public void addUsuario(Usuario usuario);
-	public void updateUsuario(Usuario usuario);
-	public void deleteUsuario(Usuario usuario);
+	public boolean addUsuario(Usuario usuario);
+	public boolean updateUsuario(Usuario usuario);
+	public boolean deleteUsuario(Usuario usuario);
 	public Usuario getUsuarioById(int id);
 	public List<Usuario> getUsuarios();
 	public Usuario findByUsuario(Usuario usuario);

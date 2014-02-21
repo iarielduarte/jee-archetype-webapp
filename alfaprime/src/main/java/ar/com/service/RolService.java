@@ -1,5 +1,6 @@
 package ar.com.service;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,10 @@ import ar.com.model.dao.RolDao;
 import ar.com.model.dao.UsuarioDao;
 
 @Service
-public class RolService implements IRolService {
+public class RolService implements IRolService, Serializable{
+	
+	
+	private static final long serialVersionUID = 1L;
 	
 	@Autowired
 	private RolDao rolDao;

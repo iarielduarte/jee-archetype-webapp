@@ -1,5 +1,6 @@
 package ar.com.model.dao;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.hibernate.SessionFactory;
@@ -10,8 +11,11 @@ import org.springframework.stereotype.Repository;
 import ar.com.model.bean.Rol;
 
 @Repository
-public class RolDao implements IRolDao {
+public class RolDao implements IRolDao, Serializable {
 
+	
+	private static final long serialVersionUID = 1L;
+	
 	@Autowired
 	private SessionFactory sessionFactory;
 	
@@ -44,13 +48,13 @@ public class RolDao implements IRolDao {
 
 	@Override
 	public Rol getRolById(int id) {
-		List list = getSessionFactory().getCurrentSession().createQuery("from Rol where id=?").setParameter(0, id).list();
+		List list = getSessionFactory().getCurrentSession().createQuery("FROM Rol WHERE id=?").setParameter(0, id).list();
 		return (Rol) list.get(0);
 	}
 
 	@Override
 	public List<Rol> getRols() {
-		List list = getSessionFactory().getCurrentSession().createQuery("from Rol").list();
+		List list = getSessionFactory().getCurrentSession().createQuery("FROM Rol").list();
 		return list;
 	}
 	
